@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>То, что началось под дождём</title>
   <style>
     html, body {
@@ -78,16 +78,16 @@
 
     .hint {
       margin-top: 20px;
-      font-size: 0.9em;
-      text-decoration: underline;
+      font-size: 0.95em;
+      color: #aaa;
       cursor: pointer;
-      opacity: 0.7;
+      text-decoration: underline;
     }
 
     .extra-text {
       margin-top: 10px;
       display: none;
-      font-size: 0.95em;
+      font-style: italic;
       color: #ccc;
     }
   </style>
@@ -96,29 +96,22 @@
   <canvas id="rain"></canvas>
   <div class="text-container">
     <h1>То, что началось под дождём</h1>
-    <p>Однажды это всё началось с простой капли на стекле.<br>И если ты здесь — значит, кое-что отозвалось.</p>
-    <p>Иногда истории не требуют слов.<br>
-    Иногда — наоборот.<br>
-    Кто-то что-то заметил. Кто-то — сделал вид, что нет.<br>
-    Но всё это — не случайно.<br>
-    Просто не каждый любит быть первым, кто говорит.</p>
+    <p>Однажды это всё началось с простой капли на стекле. <br>И если ты здесь — значит, кое-что отозвалось.</p>
+    <p>Иногда между строк и молчанием прячется то, что сказать напрямую сложно.</p>
+    <p>А может, ты почувствовала это тоже?..</p>
+
+    <form id="myForm" class="form-container">
+      <input type="hidden" name="source" value="дождливый сайт">
+      <p class="question">Что ты почувствовала?</p>
+      <button type="button" onclick="sendForm('Тепло')">Тепло</button>
+      <button type="button" onclick="sendForm('Слёзы')">Слёзы</button>
+      <button type="button" onclick="sendForm('Улыбка')">Улыбка</button>
+    </form>
 
     <div class="hint" onclick="showExtra()">Показать подсказку</div>
     <div class="extra-text" id="extraText">
       <p>То, что началось под дождём, не закончилось.<br>И это — не финал.</p>
     </div>
-
-    <form action="https://formsubmit.co/dimak0071@bk.ru" method="POST" class="form-container">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_subject" value="Ответ от неё...">
-      <input type="hidden" name="source" value="дождливый сайт">
-
-      <p class="question">Что ты почувствовала?</p>
-      <button type="submit" name="response" value="Тепло">Тепло</button>
-      <button type="submit" name="response" value="Слёзы">Слёзы</button>
-      <button type="submit" name="response" value="Улыбка">Улыбка</button>
-    </form>
   </div>
 
   <script>
@@ -161,14 +154,36 @@
 
     draw();
 
+    // Resize
     window.addEventListener('resize', () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     });
 
+    // Show extra text
     function showExtra() {
-      const el = document.getElementById("extraText");
-      el.style.display = "block";
+      document.getElementById("extraText").style.display = "block";
+    }
+
+    // Handle form submit
+    function sendForm(value) {
+      const data = {
+        source: "дождливый сайт",
+        response: value
+      };
+
+      fetch("https://formsubmit.co/ajax/dimak0071@bk.ru", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (response.ok) {
+          document.getElementById("myForm").innerHTML = "<p style='color:white;'>Я получил твой ответ. Спасибо.</p>";
+        } else {
+          alert("Не удалось отправить. Попробуй снова позже.");
+        }
+      });
     }
   </script>
 </body>
