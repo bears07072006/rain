@@ -2,11 +2,13 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>То, что началось под дождём</title>
   <style>
     html, body {
-      margin: 0; padding: 0; height: 100%;
+      margin: 0;
+      padding: 0;
+      height: 100%;
       overflow: hidden;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #0e0e10;
@@ -16,55 +18,33 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 0 10px;
-      box-sizing: border-box;
     }
 
     canvas {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
     }
 
     .text-container {
-      max-width: 400px;
+      max-width: 90%;
+      padding: 20px;
       background: rgba(0, 0, 0, 0.4);
       border-radius: 10px;
       backdrop-filter: blur(4px);
-      padding: 20px;
-      box-sizing: border-box;
-      user-select: none;
     }
 
     h1 {
-      font-size: 1.6em;
+      font-size: 1.5em;
       margin-bottom: 10px;
     }
 
     p {
       font-size: 1em;
-      line-height: 1.4em;
-      margin: 8px 0;
-    }
-
-    .hint {
-      margin-top: 15px;
-      font-size: 1em;
-      color: #a0c4ff;
-      cursor: pointer;
-      user-select: none;
-      text-decoration: underline;
-      display: inline-block;
-    }
-
-    .extra-text {
-      margin-top: 10px;
-      font-size: 0.95em;
-      color: #ccc;
-      line-height: 1.4em;
-      display: none;
-      max-width: 320px;
+      line-height: 1.5em;
     }
 
     .form-container {
@@ -73,7 +53,6 @@
       align-items: center;
       gap: 10px;
       margin-top: 30px;
-      user-select: none;
     }
 
     .form-container .question {
@@ -91,11 +70,25 @@
       transition: background 0.3s;
       cursor: pointer;
       width: 200px;
-      user-select: none;
     }
 
     .form-container button:hover {
       background: rgba(255, 255, 255, 0.25);
+    }
+
+    .hint {
+      margin-top: 20px;
+      font-size: 0.9em;
+      text-decoration: underline;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+
+    .extra-text {
+      margin-top: 10px;
+      display: none;
+      font-size: 0.95em;
+      color: #ccc;
     }
   </style>
 </head>
@@ -103,7 +96,7 @@
   <canvas id="rain"></canvas>
   <div class="text-container">
     <h1>То, что началось под дождём</h1>
-
+    <p>Однажды это всё началось с простой капли на стекле.<br>И если ты здесь — значит, кое-что отозвалось.</p>
     <p>Иногда истории не требуют слов.<br>
     Иногда — наоборот.<br>
     Кто-то что-то заметил. Кто-то — сделал вид, что нет.<br>
@@ -112,13 +105,16 @@
 
     <div class="hint" onclick="showExtra()">Показать подсказку</div>
     <div class="extra-text" id="extraText">
-      <p>То, что началось под дождём, не закончилось.<br>
-      И это — не финал.</p>
+      <p>То, что началось под дождём, не закончилось.<br>И это — не финал.</p>
     </div>
 
-    <form action="https://formspree.io/f/mnndkdbg" method="POST" class="form-container">
+    <form action="https://formsubmit.co/dimak0071@bk.ru" method="POST" class="form-container">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_subject" value="Ответ от неё...">
+      <input type="hidden" name="source" value="дождливый сайт">
+
       <p class="question">Что ты почувствовала?</p>
-      <input type="hidden" name="source" value="дождливый сайт" />
       <button type="submit" name="response" value="Тепло">Тепло</button>
       <button type="submit" name="response" value="Слёзы">Слёзы</button>
       <button type="submit" name="response" value="Улыбка">Улыбка</button>
@@ -171,20 +167,9 @@
     });
 
     function showExtra() {
-      const extra = document.getElementById('extraText');
-      if (extra.style.display === 'block') {
-        extra.style.display = 'none';
-      } else {
-        extra.style.display = 'block';
-      }
+      const el = document.getElementById("extraText");
+      el.style.display = "block";
     }
-
-    const form = document.querySelector('.form-container');
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      form.innerHTML = "<p style='color:white; text-align:center;'>Я получил твой ответ. Спасибо.</p>";
-      form.style.pointerEvents = 'none';
-    });
   </script>
 </body>
 </html>
