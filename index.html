@@ -3,85 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>...</title>
+    <title>Шёпот под дождём</title>
     <style>
-        * {
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&family=Lora:wght@400;500&display=swap');
+        
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #e6f0fa;
+            color: #333;
+            font-family: 'Lora', serif;
             line-height: 1.6;
-            color: #e8e8e8;
-            background-color: #121212;
-            min-height: 100vh;
+            overflow-x: hidden;
             position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
         }
-
-        .container {
-            position: relative;
-            z-index: 10;
-            padding: 2.5rem;
-            max-width: 500px;
-            width: 90%;
-            margin: 0 auto;
-            text-align: center;
-            background-color: rgba(20, 20, 20, 0.7);
-            border-radius: 12px;
-            backdrop-filter: blur(2px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .text-block {
-            margin: 2rem 0;
-            color: #e8e8e8;
-            font-size: 1.05rem;
-            font-weight: 300;
-            letter-spacing: 0.3px;
-        }
-
-        button {
-            background: transparent;
-            border: 1px solid rgba(232, 232, 232, 0.3);
-            color: #e8e8e8;
-            padding: 10px 24px;
-            margin: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 24px;
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-            outline: none;
-        }
-
-        button:hover {
-            background: rgba(232, 232, 232, 0.1);
-            border-color: rgba(232, 232, 232, 0.5);
-        }
-
-        #hint-text {
-            display: none;
-            margin-top: 1.8rem;
-            color: rgba(232, 232, 232, 0.7);
-            font-style: italic;
-            font-weight: 300;
-        }
-
-        .question {
-            margin: 2.5rem 0 1.2rem;
-            color: #e8e8e8;
-            font-size: 1.15rem;
-            font-weight: 400;
-        }
-
+        
+        /* Rain effect */
         .rain {
             position: fixed;
             top: 0;
@@ -89,138 +27,375 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: -1;
+            background: linear-gradient(180deg, rgba(135,206,235,0.2), rgba(173,216,230,0.1));
         }
-
+        
         .drop {
             position: absolute;
-            width: 1px;
-            height: 120px;
-            background: linear-gradient(to bottom, 
-                rgba(255, 255, 255, 0.8), 
-                rgba(255, 255, 255, 0.4), 
-                transparent);
+            width: 2px;
+            height: 20px;
+            background: rgba(135,206,235,0.5);
             animation: fall linear infinite;
-            transform-origin: top center;
         }
-
+        
         @keyframes fall {
-            0% { 
-                transform: translateY(-100px) translateX(0) rotateZ(5deg); 
-                opacity: 0; 
-            }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.6; }
-            100% { 
-                transform: translateY(calc(100vh + 100px)) translateX(20px) rotateZ(5deg); 
-                opacity: 0; 
-            }
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
         }
-
-        #response-form {
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            color: #4682b4;
+            font-size: clamp(1.8rem, 6vw, 2.2rem);
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .message {
+            background-color: rgba(255,255,255,0.9);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            border: 1px solid #e0f0ff;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="20" font-family="Arial" font-size="15" fill="rgba(135,206,235,0.2)">☔</text></svg>');
+            background-repeat: no-repeat;
+            background-position: right bottom;
+            background-size: 60px;
+        }
+        
+        .message:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #87ceeb, #4682b4, #87ceeb);
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .message-content {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.1rem, 4vw, 1.2rem);
+            color: #444;
+            line-height: 1.8;
+            text-align: center;
+        }
+        
+        .message-line {
+            position: relative;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .first-letter {
+            color: #4682b4;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+        
+        .hint-button {
+            background-color: #4682b4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Lora', serif;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto;
+        }
+        
+        .hint-button:hover {
+            background-color: #3a6b9a;
+        }
+        
+        .hint-message {
             display: none;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.1rem, 4vw, 1.2rem);
+            color: #4682b4;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 1s ease;
         }
-
-        @media (max-width: 480px) {
+        
+        .hint-message.show {
+            display: block;
+            opacity: 1;
+        }
+        
+        .question {
+            background-color: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            border: 1px solid #e0f0ff;
+            text-align: center;
+        }
+        
+        .question-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #555;
+            font-size: clamp(1rem, 3.5vw, 1.1rem);
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        
+        .option {
+            padding: 10px 15px;
+            border: 1px solid #87ceeb;
+            border-radius: 25px;
+            background-color: #fff;
+            color: #4682b4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Lora', serif;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            text-align: center;
+        }
+        
+        .option:hover {
+            background-color: #e0f0ff;
+        }
+        
+        form {
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        button[type="submit"] {
+            background-color: #4682b4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Lora', serif;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #3a6b9a;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #4682b4;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .flower {
+            position: absolute;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            opacity: 0.6;
+            z-index: 0;
+        }
+        
+        .bear {
+            position: absolute;
+            font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+            opacity: 0.5;
+            z-index: 0;
+        }
+        
+        @media (max-width: 600px) {
             .container {
-                padding: 1.8rem;
-                width: 85%;
-                background-color: rgba(20, 20, 20, 0.6);
+                padding: 10px;
             }
             
-            button {
-                width: 100%;
-                margin: 6px 0;
+            .message {
+                padding: 15px;
             }
-
+            
+            .question {
+                padding: 15px;
+            }
+            
             .drop {
-                height: 80px;
+                width: 1px;
+                height: 15px;
             }
         }
     </style>
 </head>
 <body>
     <div class="rain" id="rain"></div>
-    
     <div class="container">
-        <div class="text-block">
-            <p>Иногда истории не требуют слов.<br>
-            Иногда — наоборот.<br><br>
-            Кто-то что-то заметил.<br>
-            Кто-то — сделал вид, что нет.<br><br>
-            Но всё это — не случайно.<br>
-            Просто не каждый любит быть первым, кто говорит.</p>
-        </div>
-
-        <button onclick="toggleHint()">подсказка</button>
-        <div id="hint-text">
-            <span style="opacity:0.7;">🧸</span> То, что началось под дождём, не закончилось.<br>
-            И это — не финал.
-        </div>
-
-        <div class="question">Что ты почувствовала?</div>
+        <h1>Шёпот под дождём</h1>
         
-        <button onclick="selectAnswer('тепло')">тепло</button>
-        <button onclick="selectAnswer('слезы')">слезы</button>
-        <button onclick="selectAnswer('улыбка')">улыбка</button>
-
-        <form id="response-form" action="https://formsubmit.co/dimak0071@bk.ru" method="POST">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="answer" id="answer-input">
-            <input type="hidden" name="_next" value="">
-        </form>
+        <div class="message">
+            <div class="message-content">
+                <div class="message-line"></span>Иногда истории не требуют слов.</div>
+                <div class="message-line"></span>Иногда — наоборот.</div>
+                <div class="message-line"></span>Кто-то что-то заметил.</div>
+                <div class="message-line"></span>Кто-то — сделал вид, что нет.</div>
+                <div class="message-line"></span>Но всё это — не случайно.</div>
+                <div class="message-line"></span>Просто не каждый любит быть первым, кто говорит.</div>
+            </div>
+            <button class="hint-button" id="hintButton">Подсказка</button>
+            <div class="hint-message" id="hintMessage">🧸 То, что началось под дождём, не закончилось.<br>И это — не финал.</div>
+        </div>
+        
+        <div class="question">
+            <div class="question-text">Что ты чувствуешь?</div>
+            <div class="options">
+                <div class="option" data-option="Тепло">Тепло</div>
+                <div class="option" data-option="Улыбка">Улыбка</div>
+                <div class="option" data-option="Неизвестность">Неизвестность</div>
+                <div class="option" data-option="Страх">Страх</div>
+            </div>
+            <form id="responseForm" action="https://formsubmit.co/dimak0071@bk.ru" method="POST">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_subject" value="Ответ на вопрос">
+                <input type="hidden" name="_next" value="">
+                <input type="hidden" name="response" id="selectedOption" value="">
+                <button type="submit">Отправить ответ</button>
+            </form>
+            <div class="success-message">✓ Ответ принят</div>
+        </div>
     </div>
-
+    
     <script>
-        // Улучшенный дождь с разной скоростью и траекторией
+        // Rain effect
         function createRain() {
-            const rain = document.getElementById('rain');
-            const rainDrops = Math.min(80, Math.floor(window.innerWidth / 5));
-            
-            for(let i = 0; i < rainDrops; i++) {
+            const rainContainer = document.getElementById('rain');
+            const numDrops = window.innerWidth < 600 ? 50 : 100;
+            for (let i = 0; i < numDrops; i++) {
                 const drop = document.createElement('div');
                 drop.className = 'drop';
-                drop.style.left = Math.random() * 100 + '%';
-                drop.style.animationDelay = Math.random() * 3 + 's';
-                drop.style.animationDuration = (0.8 + Math.random() * 1.5) + 's';
-                drop.style.opacity = 0.3 + Math.random() * 0.5;
-                drop.style.height = (80 + Math.random() * 60) + 'px';
-                drop.style.transform = `rotateZ(${-5 + Math.random() * 10}deg)`;
-                rain.appendChild(drop);
+                drop.style.left = `${Math.random() * 100}vw`;
+                drop.style.animationDuration = `${0.5 + Math.random() * 1.5}s`;
+                drop.style.animationDelay = `${Math.random() * 2}s`;
+                rainContainer.appendChild(drop);
             }
         }
-        
-        createRain();
 
-        function toggleHint() {
-            const hint = document.getElementById('hint-text');
-            hint.style.display = hint.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function selectAnswer(answer) {
-            document.getElementById('answer-input').value = answer;
-            const form = document.getElementById('response-form');
-            
-            fetch(form.action, {
-                method: 'POST',
-                body: new URLSearchParams(new FormData(form)),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                }
-            }).then(() => {
-                alert('✓');
-            }).catch(error => {
-                console.error('Error:', error);
+        // Обработка выбора варианта ответа
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const selectedText = this.getAttribute('data-option');
+                document.getElementById('selectedOption').value = selectedText;
+                document.getElementById('responseForm').scrollIntoView({ behavior: 'smooth' });
             });
+        });
+
+        // Обработка нажатия на кнопку подсказки
+        document.getElementById('hintButton').addEventListener('click', () => {
+            const hintMessage = document.getElementById('hintMessage');
+            hintMessage.classList.add('show');
+            hintMessage.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Обработка интеракции с первыми буквами
+        const handleLetterInteraction = (letter) => {
+            letter.style.opacity = '1';
+            letter.style.fontSize = '1.4em';
+            setTimeout(() => {
+                letter.style.opacity = '0.7';
+                letter.style.fontSize = '1em';
+            }, 500);
+        };
+
+        document.querySelectorAll('.first-letter').forEach(letter => {
+            letter.addEventListener('mouseover', () => handleLetterInteraction(letter));
+            letter.addEventListener('mouseout', () => {
+                letter.style.opacity = '0.7';
+                letter.style.fontSize = '1em';
+            });
+            letter.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                handleLetterInteraction(letter);
+            });
+        });
+
+        // Отправка формы без перезагрузки страницы
+        document.getElementById('responseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const successMessage = form.nextElementSibling;
+    
+            try {
+                await fetch(form.action, {
+                    method: 'POST',
+                    body: new URLSearchParams(new FormData(form)),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    }
+                });
+        
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                alert('Произошла ошибка при отправке. Попробуй ещё раз.');
+            }
+        });
+
+        // Случайное размещение декоративных элементов
+        function decoratePage() {
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            const flowers = ['🌧️', '☔', '💧', '🌦️'];
+            const bears = ['🧸', '🐻', '🐾', '💙'];
+            
+            for (let i = 0; i < 8; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+                flower.style.top = `${Math.random() * containerRect.height}px`;
+                flower.style.left = `${10 + Math.random() * (containerRect.width - 20)}px`;
+                flower.style.opacity = 0.3 + Math.random() * 0.4;
+                flower.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.6 + Math.random() * 0.5})`;
+                container.appendChild(flower);
+            }
+            
+            for (let i = 0; i < 6; i++) {
+                const bear = document.createElement('div');
+                bear.className = 'bear';
+                bear.textContent = bears[Math.floor(Math.random() * bears.length)];
+                bear.style.top = `${Math.random() * containerRect.height}px`;
+                bear.style.left = `${10 + Math.random() * (containerRect.width - 20)}px`;
+                bear.style.opacity = 0.3 + Math.random() * 0.4;
+                bear.style.transform = `scale(${0.6 + Math.random() * 0.5})`;
+                container.appendChild(bear);
+            }
         }
 
-        // Пересоздаём дождь при изменении размера окна
-        window.addEventListener('resize', function() {
-            const rain = document.getElementById('rain');
-            while (rain.firstChild) {
-                rain.removeChild(rain.firstChild);
-            }
+        window.addEventListener('load', () => {
             createRain();
+            decoratePage();
         });
     </script>
 </body>
